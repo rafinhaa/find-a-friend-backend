@@ -1,6 +1,8 @@
 import fastify from "fastify";
 import { env } from "@/env";
+import { BaseError } from "@/errors/baseError";
 import { orgRoutes } from "@/routes/org/routes";
+
 import { ZodError } from "zod";
 
 const envToLogger = {
@@ -23,6 +25,13 @@ app.setErrorHandler((error, _, reply) => {
       statusCode: 400,
       error: "Validation error",
       message: error.format(),
+    });
+
+  if (error instanceof BaseError)
+    return reply.status(error.statusCode).send({
+      statusCode: error.statusCode,
+      error: error.error,
+      message: error.message,
     });
 
   reply.status(500).send({
