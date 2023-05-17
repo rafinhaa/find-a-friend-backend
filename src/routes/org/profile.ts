@@ -3,8 +3,6 @@ import { z } from "zod";
 import { makeGetOrgProfileUseCase } from "./factories/makeGetOrgProfileUseCase";
 
 export const profile = async (request: FastifyRequest, reply: FastifyReply) => {
-  await request.jwtVerify();
-
   const profileOrgRequestTokenSchema = z.string().uuid();
 
   const profileOrgRequestTokenParsed = profileOrgRequestTokenSchema.parse(
