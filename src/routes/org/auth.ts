@@ -12,6 +12,6 @@ export const auth = async (request: FastifyRequest, reply: FastifyReply) => {
 
   const authUseCase = makeAuthOrgUseCase();
 
-  await authUseCase.execute(authBodyParsed);
-  return reply.status(200).send();
+  const org = await authUseCase.execute(authBodyParsed);
+  return reply.status(200).send({ org });
 };
