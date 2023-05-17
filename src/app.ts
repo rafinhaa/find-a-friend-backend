@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import fastifyJwt from "@fastify/jwt";
 import { env } from "@/env";
 import { BaseError } from "@/errors/baseError";
 import { orgRoutes } from "@/routes/org/routes";
@@ -13,6 +14,10 @@ const envToLogger = {
 
 export const app = fastify({
   logger: envToLogger[env.NODE_ENV],
+});
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
 });
 
 app.register(orgRoutes, { prefix: "/orgs" });

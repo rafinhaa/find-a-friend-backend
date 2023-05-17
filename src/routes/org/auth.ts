@@ -13,5 +13,15 @@ export const auth = async (request: FastifyRequest, reply: FastifyReply) => {
   const authUseCase = makeAuthOrgUseCase();
 
   const org = await authUseCase.execute(authBodyParsed);
-  return reply.status(200).send({ org });
+
+  const token = await reply.jwtSign(
+    {},
+    {
+      sign: {
+        sub: org.id,
+      },
+    }
+  );
+
+  return reply.status(200).send({ org, token });
 };
