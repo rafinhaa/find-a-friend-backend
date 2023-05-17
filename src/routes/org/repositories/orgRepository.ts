@@ -2,6 +2,7 @@ import {
   TOrgDatabaseFields,
   TOrgUseCaseRequest,
   TAuthenticatedRequest,
+  TOrgId,
 } from "../types";
 
 export interface OrgsRepository {
@@ -9,4 +10,5 @@ export interface OrgsRepository {
   findByEmail(
     data: Pick<TAuthenticatedRequest, "email">
   ): Promise<TOrgDatabaseFields | null>;
+  findById(data: TOrgId): Promise<Partial<TOrgDatabaseFields | null>>;
 }

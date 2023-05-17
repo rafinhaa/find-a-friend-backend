@@ -5,6 +5,7 @@ import { OrgsRepository } from "../orgRepository";
 import type {
   TAuthenticatedRequest,
   TOrgDatabaseFields,
+  TOrgId,
   TOrgUseCaseRequest,
 } from "../../types";
 
@@ -23,6 +24,24 @@ export class PrismaOrgsRepository implements OrgsRepository {
     const org = await prisma.org.findUnique({
       where: {
         email,
+      },
+    });
+
+    return org;
+  }
+
+  async findById({ id }: TOrgId): Promise<Partial<TOrgDatabaseFields | null>> {
+    const org = await prisma.org.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        responsible: true,
+        email: true,
+        address: true,
+        cep: true,
+        whatsapp: true,
       },
     });
 

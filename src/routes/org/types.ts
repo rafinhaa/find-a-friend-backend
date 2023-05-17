@@ -11,7 +11,9 @@ export type TOrgDatabaseFields = {
 
 export type TOrgUseCaseRequest = Omit<TOrgDatabaseFields, "id" | "created_at">;
 
-export type TAuthenticatedRequest = {
-  email: string;
-  password: string;
-};
+export type TAuthenticatedRequest = Pick<
+  TOrgDatabaseFields,
+  "email" | "password"
+>;
+
+export type TOrgId = Pick<TOrgDatabaseFields, "id">;
