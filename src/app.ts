@@ -3,6 +3,7 @@ import fastifyJwt from "@fastify/jwt";
 import { env } from "@/env";
 import { BaseError } from "@/errors/baseError";
 import { orgRoutes } from "@/routes/org/routes";
+import { petRoutes } from "./routes/pets/routes";
 
 import { ZodError } from "zod";
 
@@ -21,6 +22,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(orgRoutes, { prefix: "/orgs" });
+app.register(petRoutes, { prefix: "/pets" });
 
 app.setErrorHandler((error, _, reply) => {
   if (env.NODE_ENV !== "production") console.error(error);
