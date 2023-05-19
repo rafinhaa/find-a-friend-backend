@@ -36,3 +36,5 @@ export type TPetDatabaseFieldsResponse = Omit<
 };
 
 export type TPetUseCaseRequest = Omit<TPetDatabaseFields, "id" | "created_at">;
+
+export type TPetId = Pick<TPetDatabaseFields, "id">;

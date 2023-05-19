@@ -4,6 +4,7 @@ import { PetsRepository } from "../petRepository";
 
 import type {
   TPetDatabaseFieldsResponse,
+  TPetId,
   TPetUseCaseRequest,
 } from "../../types";
 
@@ -20,6 +21,20 @@ export class PrismaPetsRepository implements PetsRepository {
         requirementsAdopted: {
           create: data.requirementsAdopted,
         },
+      },
+    });
+
+    return pet;
+  }
+
+  async findById(data: TPetId): Promise<TPetDatabaseFieldsResponse | null> {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id: data.id,
+      },
+      include: {
+        petPhotos: true,
+        requirementsAdopted: true,
       },
     });
 
