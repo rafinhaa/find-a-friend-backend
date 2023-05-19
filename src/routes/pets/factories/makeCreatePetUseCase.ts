@@ -1,5 +1,5 @@
 import { PrismaOrgsRepository } from "@/routes/org/repositories/prisma/prismaOrgRepository";
-import { CreatePetUseCase } from "../useCase/createOrgUseCase";
+import { CreatePetUseCase } from "../useCase/createPetUseCase";
 import { PrismaPetsRepository } from "../repositories/prisma/prismaPetsRepository";
 
 export const makeCreatePetUseCase = () => {
