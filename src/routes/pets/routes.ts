@@ -12,19 +12,7 @@ export const petRoutes = async (app: FastifyInstance) => {
     },
     create
   );
-  app.get(
-    "/:petId",
-    {
-      onRequest: [verifyJWT],
-    },
-    get
-  );
+  app.get("/:petId", get);
 
-  app.get(
-    "/",
-    {
-      onRequest: [verifyJWT],
-    },
-    search
-  );
+  app.get("/", search);
 };
