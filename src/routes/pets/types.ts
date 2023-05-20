@@ -38,3 +38,9 @@ export type TPetDatabaseFieldsResponse = Omit<
 export type TPetUseCaseRequest = Omit<TPetDatabaseFields, "id" | "created_at">;
 
 export type TPetId = Pick<TPetDatabaseFields, "id">;
+
+export type TSearchPetUseCaseRequest = Pick<TPetDatabaseFields, "city"> &
+  Pick<
+    Partial<TPetDatabaseFields>,
+    "carry" | "energy_level" | "level_of_independency" | "age"
+  >;

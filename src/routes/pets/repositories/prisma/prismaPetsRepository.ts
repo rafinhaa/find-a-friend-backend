@@ -6,6 +6,7 @@ import type {
   TPetDatabaseFieldsResponse,
   TPetId,
   TPetUseCaseRequest,
+  TSearchPetUseCaseRequest,
 } from "../../types";
 
 export class PrismaPetsRepository implements PetsRepository {
@@ -35,6 +36,18 @@ export class PrismaPetsRepository implements PetsRepository {
       include: {
         petPhotos: true,
         requirementsAdopted: true,
+      },
+    });
+
+    return pet;
+  }
+
+  async search(
+    data: TSearchPetUseCaseRequest
+  ): Promise<TPetDatabaseFieldsResponse[]> {
+    const pet = await prisma.pet.findMany({
+      where: {
+        ...data,
       },
     });
 
