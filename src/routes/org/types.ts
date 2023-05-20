@@ -1,19 +1,15 @@
-export type TOrgDatabaseFields = {
-  id: string;
-  responsible: string;
-  email: string;
-  cep: string;
-  address: string;
-  whatsapp: string;
-  password: string;
-  created_at: Date;
-};
+import { z } from "zod";
+import {
+  authBodySchema,
+  orgDatabaseFields,
+  profileOrgRequestTokenSchema,
+  orgUseCaseRequest,
+} from "./schemas";
 
-export type TOrgUseCaseRequest = Omit<TOrgDatabaseFields, "id" | "created_at">;
+export type TOrgDatabaseFields = z.input<typeof orgDatabaseFields>;
 
-export type TAuthenticatedRequest = Pick<
-  TOrgDatabaseFields,
-  "email" | "password"
->;
+export type TOrgUseCaseRequest = z.input<typeof orgUseCaseRequest>;
 
-export type TOrgId = Pick<TOrgDatabaseFields, "id">;
+export type TAuthenticatedRequest = z.input<typeof authBodySchema>;
+
+export type TOrgId = z.input<typeof profileOrgRequestTokenSchema>;

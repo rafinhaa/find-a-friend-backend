@@ -74,5 +74,5 @@ export const getSearchPetQuerySchema = z.object({
   carry: Carry.optional(),
   energyLevel: EnergyLevel.optional(),
   independency: LevelOfIndependency.optional(),
-  age: z.number().min(1).max(21).optional(),
+  age: petDatabaseFields.shape.age.optional(),
 });
