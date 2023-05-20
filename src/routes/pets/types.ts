@@ -1,46 +1,22 @@
-type Carry = "Small" | "Medium" | "Big";
+import { z } from "zod";
+import {
+  getSearchPetQuerySchema,
+  getPetParamsSchema,
+  createPetBodySchema,
+  petDatabaseFields,
+  petDatabaseFieldsResponse,
+  orgIdRequestTokenSchema,
+} from "./schemas";
 
-type EnergyLevel = "VeryLow" | "Low" | "Moderate" | "High" | "VeryHigh";
+export type TPetDatabaseFields = z.input<typeof petDatabaseFields>;
 
-type LevelOfIndependency = "Low" | "Medium" | "High";
+export type TPetDatabaseFieldsResponse = z.input<
+  typeof petDatabaseFieldsResponse
+>;
 
-export type TPetDatabaseFields = {
-  id: string;
-  name: string;
-  about: string;
-  age: number;
-  carry: Carry;
-  energy_level: EnergyLevel;
-  level_of_independency: LevelOfIndependency;
-  ambiente: string;
-  street: string;
-  number: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  created_at: string;
-  petPhotos: {
-    name: string;
-  }[];
-  requirementsAdopted: {
-    description: string;
-  }[];
-  org_id: string;
-};
+export type TPetUseCaseRequest = z.input<typeof createPetBodySchema> &
+  z.infer<typeof orgIdRequestTokenSchema>;
 
-export type TPetDatabaseFieldsResponse = Omit<
-  TPetDatabaseFields,
-  "requirementsAdopted" | "petPhotos" | "created_at"
-> & {
-  created_at: Date;
-};
+export type TPetId = z.input<typeof getPetParamsSchema>;
 
-export type TPetUseCaseRequest = Omit<TPetDatabaseFields, "id" | "created_at">;
-
-export type TPetId = Pick<TPetDatabaseFields, "id">;
-
-export type TSearchPetUseCaseRequest = Pick<TPetDatabaseFields, "city"> &
-  Pick<
-    Partial<TPetDatabaseFields>,
-    "carry" | "energy_level" | "level_of_independency" | "age"
-  >;
+export type TSearchPetUseCaseRequest = z.input<typeof getSearchPetQuerySchema>;

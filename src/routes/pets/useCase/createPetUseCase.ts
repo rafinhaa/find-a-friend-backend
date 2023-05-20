@@ -11,7 +11,7 @@ export class CreatePetUseCase {
 
   async execute(data: TPetUseCaseRequest) {
     const org = await this.orgsRepository.findById({
-      id: data.org_id,
+      id: data.orgId,
     });
 
     if (!org) {

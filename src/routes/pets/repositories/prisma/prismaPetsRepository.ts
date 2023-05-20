@@ -13,9 +13,13 @@ export class PrismaPetsRepository implements PetsRepository {
   async create(
     data: TPetUseCaseRequest
   ): Promise<Partial<TPetDatabaseFieldsResponse> | null> {
+    const { energyLevel, independency, orgId, ...rest } = data;
     const pet = await prisma.pet.create({
       data: {
-        ...data,
+        ...rest,
+        energy_level: energyLevel,
+        level_of_independency: independency,
+        org_id: orgId,
         petPhotos: {
           create: data.petPhotos,
         },
@@ -31,7 +35,7 @@ export class PrismaPetsRepository implements PetsRepository {
   async findById(data: TPetId): Promise<TPetDatabaseFieldsResponse | null> {
     const pet = await prisma.pet.findUnique({
       where: {
-        id: data.id,
+        id: data.petId,
       },
       include: {
         petPhotos: true,
@@ -45,9 +49,13 @@ export class PrismaPetsRepository implements PetsRepository {
   async search(
     data: TSearchPetUseCaseRequest
   ): Promise<TPetDatabaseFieldsResponse[]> {
+    const { independency, energyLevel, ...rest } = data;
+
     const pet = await prisma.pet.findMany({
       where: {
-        ...data,
+        ...rest,
+        level_of_independency: independency,
+        energy_level: energyLevel,
       },
     });
 
