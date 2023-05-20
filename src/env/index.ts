@@ -11,7 +11,8 @@ config({ path: dotEnvPathMapping });
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("production"),
   PORT: z.coerce.number().default(3000),
-  JWT_SECRET: z.string(),
+  JWT_SECRET: z.coerce.string(),
+  COOKIE_SECRET: z.coerce.string(),
 });
 
 const envParser = envSchema.safeParse(process.env);

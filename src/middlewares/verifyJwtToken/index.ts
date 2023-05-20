@@ -6,6 +6,7 @@ export const verifyJWT = async (
   reply: FastifyReply
 ) => {
   try {
+    if (!request.headers.authorization) throw new UnauthorizedError();
     await request.jwtVerify();
   } catch (error) {
     throw new UnauthorizedError();

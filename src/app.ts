@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
+import fastifyCookie from "@fastify/cookie";
 import { env } from "@/env";
 import { BaseError } from "@/errors/baseError";
 import { orgRoutes } from "@/routes/org/routes";
@@ -17,8 +18,19 @@ export const app = fastify({
   logger: envToLogger[env.NODE_ENV],
 });
 
+app.register(fastifyCookie, {
+  secret: env.COOKIE_SECRET,
+});
+
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: "refreshToken",
+    signed: true,
+  },
+  sign: {
+    expiresIn: "10m",
+  },
 });
 
 app.register(orgRoutes, { prefix: "/orgs" });
