@@ -1,11 +1,14 @@
 import { OrgsRepository } from "../repositories/orgRepository";
-import { hash } from "bcryptjs";
 
 import type { TOrgUseCaseRequest } from "../types";
 import { AlreadyExistsError } from "@/errors/AlreadyExists";
+import { PasswordDependency } from "../dependencies/passwordDependency";
 
 export class CreateOrgUseCase {
-  constructor(private orgsRepository: OrgsRepository) {}
+  constructor(
+    private orgsRepository: OrgsRepository,
+    private passwordDependency: PasswordDependency
+  ) {}
 
   async execute({
     responsible,
@@ -23,7 +26,10 @@ export class CreateOrgUseCase {
       throw new AlreadyExistsError();
     }
 
-    const passwordHash = await hash(password, 10);
+    const passwordHash = await this.passwordDependency.createHash({
+      password,
+      salt: 10,
+    });
 
     const org = await this.orgsRepository.create({
       responsible,

@@ -13,3 +13,15 @@ export type TOrgUseCaseRequest = z.input<typeof orgUseCaseRequest>;
 export type TAuthenticatedRequest = z.input<typeof authBodySchema>;
 
 export type TOrgId = z.input<typeof profileOrgRequestTokenSchema>;
+
+export type TPasswordDependencyCompare = {
+  password: string;
+  hash: string;
+};
+
+export type TPasswordDependencyHash = Omit<
+  TPasswordDependencyCompare,
+  "hash"
+> & {
+  salt: number;
+};

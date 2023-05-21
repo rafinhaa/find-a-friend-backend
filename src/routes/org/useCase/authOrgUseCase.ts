@@ -1,11 +1,14 @@
 import { UnauthorizedError } from "@/errors/UnauthorizedError";
 import { OrgsRepository } from "../repositories/orgRepository";
-import { compare } from "bcryptjs";
+import { PasswordDependency } from "../dependencies/passwordDependency";
 
 import type { TAuthenticatedRequest, TOrgDatabaseFields } from "../types";
 
 export class AuthenticateOrgUseCase {
-  constructor(private orgsRepository: OrgsRepository) {}
+  constructor(
+    private orgsRepository: OrgsRepository,
+    private passwordDependency: PasswordDependency
+  ) {}
 
   async execute({
     email,
@@ -17,7 +20,10 @@ export class AuthenticateOrgUseCase {
 
     if (!org) throw new UnauthorizedError();
 
-    const doesPasswordMatch = await compare(password, org.password);
+    const doesPasswordMatch = await this.passwordDependency.comparePassword({
+      password,
+      hash: org.password,
+    });
 
     if (!doesPasswordMatch) throw new UnauthorizedError();
 
