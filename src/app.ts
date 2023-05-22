@@ -1,4 +1,4 @@
-import fastify from "fastify";
+import fastify, { FastifyReply, FastifyRequest } from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 import { env } from "@/env";
@@ -10,7 +10,21 @@ import { ZodError } from "zod";
 
 const envToLogger = {
   development: true,
-  production: true,
+  production: {
+    serializers: {
+      res: (res: FastifyReply) => ({
+        statusCode: res.statusCode,
+      }),
+      req: (req: FastifyRequest) => ({
+        ip: req.headers["x-forwarded-for"] || req.ip,
+        method: req.method,
+        url: req.url,
+        hostname: req.hostname,
+        remoteAddress: req.socket.remoteAddress,
+        remotePort: req.socket.remotePort,
+      }),
+    },
+  },
   test: false,
 };
 
