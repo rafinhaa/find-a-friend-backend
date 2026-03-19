@@ -5,12 +5,14 @@ import { env } from "@/env";
 import { BaseError } from "@/errors/baseError";
 import { orgRoutes } from "@/routes/org/routes";
 import { petRoutes } from "./routes/pets/routes";
+import pino from 'pino';
 
 import { ZodError } from "zod";
 
 const envToLogger = {
   development: true,
-  production: {
+  production: pino({
+    level: 'info',
     serializers: {
       res: (res: FastifyReply) => ({
         statusCode: res.statusCode,
@@ -24,7 +26,7 @@ const envToLogger = {
         remotePort: req.socket.remotePort,
       }),
     },
-  },
+  }),
   test: false,
 };
 
