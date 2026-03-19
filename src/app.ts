@@ -1,4 +1,4 @@
-import fastify, { FastifyReply, FastifyRequest } from "fastify";
+import fastify, { FastifyLoggerOptions, FastifyReply, FastifyRequest } from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 import { env } from "@/env";
@@ -9,24 +9,24 @@ import pino from 'pino';
 
 import { ZodError } from "zod";
 
-const envToLogger = {
+const envToLogger: Record<string, boolean | FastifyLoggerOptions> = {
   development: true,
-  production: pino({
+  production: {
     level: 'info',
     serializers: {
-      res: (res: FastifyReply) => ({
+      req: (req) => ({
+        method: req?.method,
+        url: req?.url,
+        hostname: req?.hostname,
+        remoteAddress: req?.ip,
+        remotePort: req.socket?.remotePort,
+      }),
+
+      res: (res) => ({
         statusCode: res.statusCode,
       }),
-      req: (req: FastifyRequest) => ({
-        ip: req.headers["x-forwarded-for"] || req.ip,
-        method: req.method,
-        url: req.url,
-        hostname: req.hostname,
-        remoteAddress: req.socket.remoteAddress,
-        remotePort: req.socket.remotePort,
-      }),
     },
-  }),
+  },
   test: false,
 };
 
